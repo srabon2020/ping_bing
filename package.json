@@ -1,0 +1,26 @@
+{
+  "name": "ping_bing",
+  "version": "1.0.0",
+  "description": "Node Module to Use the Bing Adaptive URL Submission API",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/docluv/ping_bing.git"
+  },
+  "keywords": [
+    "SEO",
+    "Bing"
+  ],
+  "author": "Chris Love",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/docluv/ping_bing/issues"
+  },
+  "homepage": "https://github.com/docluv/ping_bing#readme",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
+}

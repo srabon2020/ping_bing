@@ -1,0 +1,1 @@
+const pingBing = require( "index.js" );
