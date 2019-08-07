@@ -19,10 +19,57 @@ function isURL( src ) {
 
 }
 
+function isValidUrlList( urlList ) {
+
+    if ( !urlList || !urlList.length || urlList.length < 1 ) {
+        return false;
+    }
+
+    let isValid = true;
+
+    for ( let index = 0; index < urlList.length; index++ ) {
+
+        if ( !isURL( urlList[ index ] ) ) {
+
+            isValid = false;
+            index = urlList.length;
+
+        }
+
+    }
+
+    return isValid;
+
+}
+
+function cleanURL( src ) {
+
+    return src.replace( /\//g, "\/" );
+}
+
+function cleanUrlList( urlList ) {
+
+    for ( let index = 0; index < urlList.length; index++ ) {
+
+        urlList[ index ] = cleanURL( urlList[ index ] );
+
+    }
+
+    return urlList;
+}
+
 
 exports.pingBing = function ( options ) {
 
     return new Promise( ( resolve, reject ) => {
+
+        if ( !options.apiKey ) {
+
+            reject( "missing Bing API Key - https://docs.microsoft.com/en-us/bingwebmaster/getting-access" );
+
+            return;
+
+        }
 
         if ( !options.siteUrl || !isURL( options.siteUrl ) ) {
 
@@ -32,30 +79,45 @@ exports.pingBing = function ( options ) {
         }
 
         if ( ( !options.url || !isURL( options.url ) ) ||
-            ( !options.urlList || !options.urlList.length || options.urlList.length < 1 ) ) {
+            ( !isValidUrlList( options.urlList ) ) ) {
 
             reject( "missing URL(s) to submit to Bing for Indexing" );
 
             return;
         }
 
-        let payload = {
-            "siteUrl": options.siteUrl.replace( /\//g, "\/" )
-        };
+        let payload = {},
+            bingURL;
 
         if ( options.url ) {
-            payload.url = options.url.replace( /\//g, "\/" );
+
+            bingURL = "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apikey=" + options.apiKey;
+
+            payload = {
+                "siteUrl": cleanURL( options.siteUrl ),
+                "url": cleanURL( options.url )
+            };
+
         } else {
-            payload.urlList = options.urlList;
+
+            bingURL = "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlbatch?apikey=" + options.apiKey;
+
+            payload = {
+                "siteUrl": cleanURL( options.siteUrl ),
+                "urlList": cleanUrlList( options.urlList )
+            };
+
         }
 
         request.post(
-            "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrl?apikey=" + options.apiKey, {
+            bingURL, {
                 json: payload
             },
             function ( error, response, body ) {
 
                 if ( !error && response.statusCode === 200 ) {
+
+                    //right now should just be a simple JSON object with a d property === null
 
                     resolve( body );
 
