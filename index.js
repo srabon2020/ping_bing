@@ -78,7 +78,7 @@ exports.pingBing = function ( options ) {
             return;
         }
 
-        if ( ( !options.url || !isURL( options.url ) ) ||
+        if ( ( !options.url || !isURL( options.url ) ) &&
             ( !isValidUrlList( options.urlList ) ) ) {
 
             reject( "missing URL(s) to submit to Bing for Indexing" );

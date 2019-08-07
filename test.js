@@ -3,8 +3,6 @@ const pingBing = require( "index.js" ),
     siteUrl = "[Your Bing Verified Site URL (domain)]";
 
 
-//TODO: Write Tests :)
-
 const singleURL = {
     apiKey: apiKey,
     siteUrl: siteUrl,
