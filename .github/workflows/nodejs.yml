@@ -1,0 +1,18 @@
+const pingBing = require( "ping_bing" ),
+apiKey = "3f4f39035bd54a9cb91f2702bb7fa5d1",
+    siteUrl = "https://college-football.live";
+
+
+const batchURLs = {
+    apiKey: apiKey,
+    siteUrl: siteUrl,
+    urlList: [ "https://college-football.live/live", "https://college-football.live/stream", "https://college-football.live/today" ]
+};
+
+pingBing.pingBing( batchURLs )
+    .then( body => {
+        console.log( "success: ", body );
+    } )
+    .catch( err => {
+        console.log( "error: ", err );
+    } );
